@@ -1,5 +1,5 @@
 import Category from "../models/category.js";
-import Button from "../models/Button.js";
+import Button from "../models/button.js";
 
 // GET all categories
 export const getCategories = async (req, res) => {
