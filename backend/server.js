@@ -1,23 +1,24 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
+import dotenv from "dotenv";
+dotenv.config();
 
-const connectDB = require("./db/index");
-const boardRoutes = require("./routes/boards");
+import express from "express";
+import cors from "cors";
+
+import connectDB from "./db/index.js";
+import boardRoutes from "./routes/boards.js";
+import { ensureDefaultCategories } from "./seed/defaultCategories.js";
 
 const app = express();
 
-// connect database
-connectDB();
+connectDB().then(() => {
+  ensureDefaultCategories();
+});
 
-// middleware
 app.use(cors());
 app.use(express.json());
 
-// routes
 app.use("/api/board", boardRoutes);
 
-// start server
 app.listen(process.env.PORT, () => {
-  console.log("Server running on port " + process.env.PORT);
+  console.log(`Server running on port ${process.env.PORT}`);
 });

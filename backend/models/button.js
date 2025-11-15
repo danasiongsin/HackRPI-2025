@@ -1,13 +1,16 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const ButtonSchema = new mongoose.Schema({
   category_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Category"
+    ref: "Category",
+    required: true
   },
   label: { type: String, required: true },
-  img_url: String,
-  audio_url: String
+  img_url: { type: String, default: "" },
+  audio_url: { type: String, default: "" }
 });
 
-module.exports = mongoose.model("Button", ButtonSchema);
+const Button = mongoose.model("Button", ButtonSchema);
+
+export default Button;

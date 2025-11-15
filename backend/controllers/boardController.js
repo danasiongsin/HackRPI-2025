@@ -1,28 +1,61 @@
-const Category = require("../models/Category");
-const Button = require("../models/Button");
+import Category from "../models/Category.js";
+import Button from "../models/Button.js";
 
-exports.getCategories = async (req, res) => {
-  const categories = await Category.find();
-  res.json(categories);
+// GET all categories
+export const getCategories = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error fetching categories" });
+  }
 };
 
-exports.getButtonsByCategory = async (req, res) => {
-  const { id } = req.params;
-  const buttons = await Button.find({ category_id: id });
-  res.json(buttons);
+// GET buttons for a category
+export const getButtonsByCategory = async (req, res) => {
+  try {
+    const buttons = await Button.find({ category_id: req.params.id });
+    res.json(buttons);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error fetching buttons" });
+  }
 };
 
-exports.createButton = async (req, res) => {
-  const button = await Button.create(req.body);
-  res.json(button);
+// CREATE a new button
+export const createButton = async (req, res) => {
+  try {
+    const created = await Button.create(req.body);
+    res.json(created);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error creating button" });
+  }
 };
 
-exports.updateButton = async (req, res) => {
-  const updated = await Button.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(updated);
+// UPDATE a button
+export const updateButton = async (req, res) => {
+  try {
+    const updated = await Button.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error updating button" });
+  }
 };
 
-exports.deleteButton = async (req, res) => {
-  await Button.findByIdAndDelete(req.params.id);
-  res.json({ success: true });
+// DELETE a button
+export const deleteButton = async (req, res) => {
+  try {
+    await Button.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error deleting button" });
+  }
 };

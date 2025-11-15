@@ -1,11 +1,18 @@
-const express = require("express");
+import express from "express";
+import {
+  getCategories,
+  getButtonsByCategory,
+  createButton,
+  updateButton,
+  deleteButton
+} from "../controllers/boardController.js";
+
 const router = express.Router();
-const controller = require("../controllers/boardController");
 
-router.get("/categories", controller.getCategories);
-router.get("/categories/:id/buttons", controller.getButtonsByCategory);
-router.post("/buttons", controller.createButton);
-router.put("/buttons/:id", controller.updateButton);
-router.delete("/buttons/:id", controller.deleteButton);
+router.get("/categories", getCategories);
+router.get("/categories/:id/buttons", getButtonsByCategory);
+router.post("/buttons", createButton);
+router.put("/buttons/:id", updateButton);
+router.delete("/buttons/:id", deleteButton);
 
-module.exports = router;
+export default router;
