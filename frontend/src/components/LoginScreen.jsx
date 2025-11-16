@@ -47,6 +47,19 @@ export default function LoginScreen({ onLogin }) {
     }
   };
 
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
+        phone,
+        password
+      });
+      setError("");
+      onLogin(res.data); // calls App's handleLogin which saves to localStorage
+    } catch (err) {
+      setError(err.response?.data?.error || "Login failed");
+    }
+  };
+
   return (
     <div style={{ width: "300px", margin: "auto", marginTop: "80px" }}>
       <h2>{isRegister ? "Create Account" : "Login"}</h2>

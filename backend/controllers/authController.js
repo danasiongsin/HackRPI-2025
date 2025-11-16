@@ -15,39 +15,36 @@ export const register = async (req, res) => {
   try {
     const { name, phone, password } = req.body;
 
-    if (!name || !phone || !password) {
-      return res.status(400).json({ error: "Name, phone, and password required." });
+    // Validate phone number (10 digits, numeric only)
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+      return res.status(400).json({ 
+        error: "Phone number must be exactly 10 digits" 
+      });
     }
 
-    // Check if user exists
-    const existing = await User.findOne({ phone });
-    if (existing) {
-      return res.status(400).json({ error: "User already exists." });
+    // Check if user already exists
+    const existingUser = await User.findOne({ phone });
+    if (existingUser) {
+      return res.status(400).json({ error: "Phone number already registered" });
     }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create user
     const user = await User.create({
       name,
       phone,
-      password: hashedPassword,
-      selectedIcons: []
+      password: hashedPassword
     });
 
-    const token = generateToken(user);
-
-    res.json({
-      user: {
-        _id: user._id,
-        name: user.name,
-        phone: user.phone,
-        selectedIcons: user.selectedIcons,
-      },
-      token
+    res.json({ 
+      message: "User registered successfully",
+      userId: user._id 
     });
   } catch (err) {
-    console.error("Register error:", err);
+    console.error(err);
     res.status(500).json({ error: "Server error during registration" });
   }
 };
