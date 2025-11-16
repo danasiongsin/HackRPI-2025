@@ -8,7 +8,7 @@ import connectDB from "./db/index.js";
 
 import authRoutes from "./routes/auth.js";
 import iconRoutes from "./routes/icons.js";
-import userRoutes from "./routes/users.js"; // we'll add this file next if you haven't
+import userRoutes from "./routes/users.js";
 import boardRoutes from "./routes/boards.js";
 
 import { ensureDefaultCategories } from "./seed/defaultCategories.js";
@@ -16,7 +16,7 @@ import { ensureDefaultIcons } from "./seed/defaultIcons.js";
 
 const app = express();
 
-// connect to db + seed defaults
+// Connect to database + seed defaults
 connectDB().then(async () => {
   await ensureDefaultCategories();
   await ensureDefaultIcons();
@@ -25,15 +25,20 @@ connectDB().then(async () => {
 app.use(cors());
 app.use(express.json());
 
-// REGISTER ROUTES HERE
-app.use("/api/auth", authRoutes);     // <-- FIX
-app.use("/api/icons", iconRoutes);     // <-- FIX
-app.use("/api/users", userRoutes);     // <-- FIX
+// ✅ Correct static folder for images
+// Everything inside backend/public/images is now served at /images/<filename>
+app.use("/images", express.static("public/images"));
 
-// old board routes (optional)
+// ============================
+//       API ROUTES
+// ============================
+app.use("/api/auth", authRoutes);
+app.use("/api/icons", iconRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/board", boardRoutes);
 
-// start server
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
