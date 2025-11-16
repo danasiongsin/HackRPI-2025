@@ -12,6 +12,7 @@ import authRoutes from "./routes/auth.js";
 import iconRoutes from "./routes/icons.js";
 import userRoutes from "./routes/users.js";
 import boardRoutes from "./routes/boards.js";
+import emailRoutes from "./routes/email.js";
 
 import { ensureDefaultCategories } from "./seed/defaultCategories.js";
 import { ensureDefaultIcons } from "./seed/defaultIcons.js";
@@ -41,6 +42,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/icons", iconRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/board", boardRoutes);
+app.use("/api/email", emailRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
