@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import cors from "cors";
 
 import connectDB from "./db/index.js";
@@ -25,9 +27,12 @@ connectDB().then(async () => {
 app.use(cors());
 app.use(express.json());
 
-// ✅ Correct static folder for images
-// Everything inside backend/public/images is now served at /images/<filename>
-app.use("/images", express.static("public/images"));
+// ensure __dirname works in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// serve image assets under /images
+app.use("/images", express.static(path.join(__dirname, "public", "images")));
 
 // ============================
 //       API ROUTES
@@ -42,3 +47,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+export default app;

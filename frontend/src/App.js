@@ -25,9 +25,8 @@ function App() {
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
             {selectedIcons.map((item) => (
               <Square
-                key={item.id}
-                title={item.label}
-                imageSrc={item.imageSrc}
+                key={item._id}
+                icon={item}
               />
             ))}
           </div>

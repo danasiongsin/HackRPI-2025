@@ -1,19 +1,31 @@
 import mongoose from "mongoose";
 
-const IconSchema = new mongoose.Schema(
-  {
-    label: { type: String, required: true },
-    img_url: { type: String, default: "" },
-    audio_url: { type: String, default: "" },
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: true
-    }
+const iconSchema = new mongoose.Schema({
+  label: {
+    type: String,
+    required: true
   },
-  { timestamps: true }
-);
+  img_url: {
+    type: String,
+    default: ""
+  },
+  audio_url: {
+    type: String,
+    default: ""
+  },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
-const Icon = mongoose.model("Icon", IconSchema);
-
-export default Icon;
+export default mongoose.model("Icon", iconSchema);

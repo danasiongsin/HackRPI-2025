@@ -3,13 +3,13 @@ import Icon from "../models/icon.js";
 
 // Default icons grouped by category
 const iconLibrary = {
-  Food: ["Eat", "Drink", "Snack"],
-  Drinks: ["Water", "Juice", "Milk"],
-  Emotions: ["Happy", "Sad", "Angry"],
+  Food: ["Eat", "Snack"],
+  Drinks: ["Drink"],
+  Emotions: ["Happy", "Sad", "Angry", "Hot", "Cold"],
   Needs: ["Help", "Bathroom", "More", "Stop"],
-  Actions: ["Go", "Come", "Play"],
-  Places: ["Home", "School", "Outside"],
-  People: ["Mom", "Dad", "Family"]
+  Actions: ["Go", "Come", "Play", "Drive"],
+  Places: ["Home", "School", "Park"],
+  People: ["Mother", "Father"]
 };
 
 export const ensureDefaultIcons = async () => {
@@ -28,17 +28,20 @@ export const ensureDefaultIcons = async () => {
       });
 
       if (!existing) {
-        // File name = lowercase label + .png
-        const fileName = `${label.toLowerCase()}.png`;
+
+        // Convert label to filename:
+        // "Happy" → "happy.png"
+        // "More" → "more.png"
+        const filename = `${label.toLowerCase()}.png`;
 
         await Icon.create({
           label,
-          img_url: `/images/${fileName}`,   // ⭐ correct URL
+          img_url: "",      // Add actual URLs later
           audio_url: "",
           category: category._id
         });
 
-        console.log(`Created icon '${label}' in ${categoryName}`);
+        console.log(`Created icon '${label}' in ${categoryName} with file '${filename}'`);
       }
     }
   }
