@@ -6,6 +6,9 @@ import Square from "./components/Square";
 function App() {
   const [user, setUser] = useState(null); // store logged-in user
   const [selectedIcons, setSelectedIcons] = useState(null);
+  const handleSquareClick = (icon) => {
+    console.log("Square clicked:", icon);
+  };
 
   return (
     <div>
@@ -22,11 +25,13 @@ function App() {
           <h1 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}>
             Your Board
           </h1>
+          
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
             {selectedIcons.map((item) => (
               <Square
                 key={item._id}
                 icon={item}
+                onClick={() => handleSquareClick(item)}
               />
             ))}
           </div>
