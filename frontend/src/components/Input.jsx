@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./Input.css";
 
+const API = process.env.REACT_APP_API_URL;
+
+
 export default function Input({ onContinue, user }) {
   const [categories, setCategories] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -14,14 +17,14 @@ export default function Input({ onContinue, user }) {
     const load = async () => {
       try {
         setLoading(true);
-        const catRes = await axios.get("http://localhost:5000/api/board/categories");
+        const catRes = await axios.get(`${API}/api/board/categories`);
         const cats = catRes.data || [];
 
         const catsWithItems = await Promise.all(
           cats.map(async (c) => {
             try {
               const iconsRes = await axios.get(
-                `http://localhost:5000/api/icons/by-category/${c._id}`
+                `${API}/api/icons/by-category/${c._id}`
               );
               const items = (iconsRes.data || []).map((icon) => ({
                 _id: icon._id,
@@ -41,7 +44,7 @@ export default function Input({ onContinue, user }) {
         // load user's previously selected icons (if any)
         if (userId) {
           try {
-            const selRes = await axios.get(`http://localhost:5000/api/users/${userId}/icons`);
+            const selRes = await axios.get(`${API}/api/users/${userId}/icons`);
             const selIds = selRes.data.map((i) => i._id);
             setSelected(selIds);
 
@@ -83,7 +86,7 @@ export default function Input({ onContinue, user }) {
       }
 
       await axios.post(
-        `http://localhost:5000/api/users/${userId}/select-icons`,
+        `${API}/api/users/${userId}/select-icons`,
         { iconIds: selected }
       );
 

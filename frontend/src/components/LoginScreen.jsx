@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./LoginScreen.css";
 
+const API = process.env.REACT_APP_API_URL;
+
+
 export default function LoginScreen({ onLogin }) {
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState("");
@@ -33,7 +36,7 @@ export default function LoginScreen({ onLogin }) {
           return;
         }
 
-        const res = await axios.post("http://localhost:5000/api/auth/register", {
+        const res = await axios.post(`${API}/api/auth/register`, {
           name,
           phone: phone.trim(),
           email: email ? email.trim().toLowerCase() : null,
@@ -66,7 +69,7 @@ export default function LoginScreen({ onLogin }) {
           payload = { phone: id, password };
         }
 
-        const res = await axios.post("http://localhost:5000/api/auth/login", payload);
+        const res = await axios.post(`${API}/api/auth/login`, payload);
         const { user, token } = res.data;
         localStorage.setItem("token", token);
         localStorage.setItem("userId", user._id);
