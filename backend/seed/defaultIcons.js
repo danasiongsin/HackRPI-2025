@@ -3,10 +3,27 @@ import Icon from "../models/icon.js";
 
 // Default icons grouped by category
 const iconLibrary = {
-  Food: ["Eat", "Drink", "Snack"],
-  Drinks: ["Water", "Juice", "Milk"],
-  Emotions: ["Happy", "Sad", "Angry"],
-  Needs: ["Help", "Bathroom", "More", "Stop"],
+  Food: [
+    { label: "Eat", file: "eat.png" },
+    { label: "Drink", file: "drink.png" },
+    { label: "Snack", file: "snack.png" }
+  ],
+  Drinks: [
+    { label: "Water", file: "water.png" },
+    { label: "Juice", file: "juice.png" },
+    { label: "Milk", file: "milk.png" }
+  ],
+  Needs: [
+    // { label: "Help", file: "help.png" },
+    { label: "Bathroom", file: "bathroom.png" },
+    // { label: "More", file: "more.png" },
+    { label: "Stop", file: "stop.png" }
+  ],
+  Emotions: [
+    {label: "Happy", file: "happy.png"}, 
+    {label: "Sad", file: "sad.png"},
+    {label: "Angry", file: "angry.png"}
+  ],
   Actions: ["Go", "Come", "Play"],
   Places: ["Home", "School", "Outside"],
   People: ["Mom", "Dad", "Family"]
