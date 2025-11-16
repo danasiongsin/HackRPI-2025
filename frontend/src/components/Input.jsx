@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "./Input.css";
 
-const categories = [
+export default function Input({ onContinue }) {
+  // const [categories, setCategories] = useState([]);
+  const [selected, setSelected] = useState([]);
+
+  const phone = localStorage.getItem("userPhone");
+
+  const categories = [
   {
     name: "Wants",
     items: [
@@ -28,18 +35,44 @@ const categories = [
   }
 ];
 
-export default function Input({ onContinue }) {
-  const [selected, setSelected] = useState([]);
+    const loadSelectedIcons = async () => {
+      const res = await axios.get(
+        `http://localhost:5000/api/users/${phone}/icons`
+      );
 
+      // Saved icons → array of MongoDB IDs
+      setSelected(res.data.map((icon) => icon._id));
+    };
+
+
+
+  // -----------------------------
+  // 2. Toggle selection
+  // -----------------------------
   const toggle = (id) => {
     setSelected((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id)
+        ? prev.filter((x) => x !== id)
+        : [...prev, id]
     );
   };
 
-  const handleContinue = () => {
-    const allItems = categories.flatMap((cat) => cat.items);
-    onContinue(selected.map((id) => allItems.find((i) => i.id === id)));
+  // -----------------------------
+  // 3. Save selection to backend
+  // -----------------------------
+  const handleContinue = async () => {
+    await axios.post(
+      `http://localhost:5000/api/users/${phone}/select-icons`,
+      { iconIds: selected }
+    );
+
+    // Build final selection list for display
+    const allItems = categories.flatMap((c) => c.items);
+    const detailedSelected = allItems.filter((i) =>
+      selected.includes(i.id)
+    );
+
+    onContinue(detailedSelected);
   };
 
   return (
@@ -47,16 +80,18 @@ export default function Input({ onContinue }) {
       <h1 className="title">Select Items</h1>
 
       {categories.map((cat) => (
-        <div key={cat.name} className="category">
+        <div key={cat.id} className="category">
           <h2 className="category-title">{cat.name}</h2>
+
           <div className="grid">
             {cat.items.map((item) => {
-              const isActive = selected.includes(item.id);
+              const active = selected.includes(item.id);
+
               return (
                 <button
                   key={item.id}
                   onClick={() => toggle(item.id)}
-                  className={`card ${isActive ? "active" : ""}`}
+                  className={`card ${active ? "active" : ""}`}
                 >
                   {item.label}
                 </button>

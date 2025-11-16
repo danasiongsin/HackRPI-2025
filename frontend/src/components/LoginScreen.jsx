@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function AuthScreen() {
-  const [isRegister, setIsRegister] = useState(false);  // toggle login/register
+export default function LoginScreen({ onLogin }) {
+  const [isRegister, setIsRegister] = useState(false);  
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -16,14 +16,12 @@ export default function AuthScreen() {
       let response;
 
       if (isRegister) {
-        // CREATE ACCOUNT
         response = await axios.post("http://localhost:5000/api/auth/register", {
           name,
           phone,
           password
         });
       } else {
-        // LOGIN
         response = await axios.post("http://localhost:5000/api/auth/login", {
           phone,
           password
@@ -35,16 +33,16 @@ export default function AuthScreen() {
       localStorage.setItem("token", token);
       localStorage.setItem("userId", user._id);
 
-      alert(isRegister ? "Account created!" : "Logged in!");
-      // navigate("/input");
-         // <--- THIS switches to Input screen
+      // Pass user back to App.js
+      onLogin(user);
 
+      alert(isRegister ? "Account created!" : "Logged in!");
 
     } catch (err) {
       console.error(err);
       setError(
         err.response?.data?.error ||
-          "Something went wrong. Try again."
+        "Something went wrong. Try again."
       );
     }
   };
