@@ -11,6 +11,9 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState(null);
 
+  useEffect(() => {
+    document.title = "TalkTiles";   // change to whatever you want
+  }, []);
   // Load user and selected icons from localStorage on mount
   useEffect(() => {
     try {
