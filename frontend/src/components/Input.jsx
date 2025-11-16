@@ -121,7 +121,7 @@ export default function Input({ onContinue, user }) {
                     <img
                       src={item.imageSrc}
                       alt={item.label}
-                      style={{ width: "60px", height: "60px", objectFit: "contain"}}
+                      style={{ width: "90px", height: "90px", objectFit: "contain"}}
                     />
                   )}
                   <div className="square-text">{item.label}</div>

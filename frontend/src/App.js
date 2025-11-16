@@ -9,6 +9,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [selectedIcons, setSelectedIcons] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState(null);
 
   // Load user and selected icons from localStorage on mount
   useEffect(() => {
@@ -49,10 +50,6 @@ function App() {
     localStorage.removeItem("selectedIcons");
   };
 
-  // const handleSquareClick = (icon) => {
-    
-  //   speakWithElevenLabs(icon.label);
-  // };
   const handleSquareClick = (icon) => {
     console.log("Square clicked:", icon);
     speakWithElevenLabs(
@@ -60,13 +57,20 @@ function App() {
     () => setSpeakingId(icon._id),  // start
     () => setSpeakingId(null)       // end
   );
+
+  
 };
   
+const showToast = (msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);  // hide after 3 sec
+  };
   const [speakingId, setSpeakingId] = useState(null);
 
   if (loading) {
     return <div style={{ padding: "24px" }}>Loading...</div>;
   }
+  
 
   return (
     <div className="app-background">
@@ -98,6 +102,11 @@ function App() {
               Logout
             </button>
           </div>
+          {toast && (
+            <div className="toast-popup">
+              {toast}
+            </div>
+          )}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
             {selectedIcons.map((item) => (
               <Square
@@ -105,6 +114,7 @@ function App() {
                 icon={item}
                 onClick={() => handleSquareClick(item)}
                 isSpeaking={speakingId === item._id}
+                showToast={showToast}
               />
             ))}
           </div>

@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import "./Square.css";
 
-export default function Square({ icon = {}, onClick, isSpeaking }) {
+export default function Square({ icon = {}, onClick, isSpeaking, showToast }) {
   const src =
     icon.img_url ||
     icon.imageSrc ||
@@ -34,7 +34,10 @@ export default function Square({ icon = {}, onClick, isSpeaking }) {
       }
 
       await axios.post("http://localhost:5000/api/email/send", payload);
-      alert(`"${icon.label}" sent!`);
+      if (showToast) {
+        // showToast(`"${icon.label}" sent to ${promptEmail}"`);
+        showToast(`"${icon.label}" sent to email."`);
+      }
     } catch (err) {
       console.error("Error sending email:", err);
       alert(err.response?.data?.error || "Failed to send email");
@@ -54,13 +57,14 @@ export default function Square({ icon = {}, onClick, isSpeaking }) {
         <img
           src={src}
           alt={icon.label || "icon"}
-          style={{
-            width: 56,
-            height: 56,
-            objectFit: "contain",
-            display: "block",
-            margin: "0 auto 8px"
-          }}
+          // style={{
+          //   width: 56,
+          //   height: 56,
+          //   objectFit: "contain",
+          //   display: "block",
+          //   margin: "0 auto 8px"
+          // }}
+          className="square-image"
           onError={(e) => console.error(`Image failed to load: ${src}`, e)}
         />
       ) : null}
