@@ -24,20 +24,22 @@
 /* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 12px;
 }
 
 /* CARD */
 .card {
-  height: 80px;
-  border-radius: 16px;
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
   border: 1px solid #ddd;
   background: white;
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: 0.2s ease;
+  overflow: hidden;
 }
 
 .card:hover {
@@ -66,4 +68,10 @@
 .continue.disabled {
   background: #ccc;
   cursor: not-allowed;
+}
+
+.square-text {
+  font-size: 16px;
+  /* font-weight: 600; */
+  color: #222;
 }

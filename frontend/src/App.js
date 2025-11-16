@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import LoginScreen from "./components/LoginScreen";
 import Input from "./components/Input";
 import Square from "./components/Square";
+import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -56,7 +57,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="app-background">
       {/* 1. Login screen */}
       {!user ? (
         <LoginScreen onLogin={handleLogin} />
@@ -75,7 +76,7 @@ function App() {
               onClick={handleLogout}
               style={{
                 padding: "8px 16px",
-                backgroundColor: "#ff4444",
+                backgroundColor: "#5b3ef5",
                 color: "white",
                 border: "none",
                 borderRadius: "4px",

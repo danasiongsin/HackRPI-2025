@@ -63,59 +63,58 @@ export default function LoginScreen({ onLogin }) {
   };
 
   return (
-    <div style={{ width: "300px", margin: "auto", marginTop: "80px" }}>
-      <h2>{isRegister ? "Create Account" : "Login"}</h2>
+    <div className="login-container">
+      <div className="login-card">
+        <h2 className="login-title">
+          {isRegister ? "Create Account" : "Welcome Back!"}
+        </h2>
 
-      <form onSubmit={handleSubmit}>
-        {isRegister && (
+        <form onSubmit={handleSubmit} className="login-form">
+          {isRegister && (
+            <input
+              className="login-input"
+              type="text"
+              placeholder="Your Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          )}
+
           <input
+            className="login-input"
             type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="Phone Number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             required
-            style={{ width: "100%", padding: "8px", marginBottom: "10px", boxSizing: "border-box" }}
           />
-        )}
 
-        <input
-          type="text"
-          placeholder="Phone number (10 digits)"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-          style={{ width: "100%", padding: "8px", marginBottom: "10px", boxSizing: "border-box" }}
-        />
+          <input
+            className="login-input"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ width: "100%", padding: "8px", marginBottom: "10px", boxSizing: "border-box" }}
-        />
+          <button type="submit" className="login-button">
+            {isRegister ? "Create Account" : "Login"}
+          </button>
+        </form>
 
-        <button type="submit" style={{ width: "100%", padding: "10px", cursor: "pointer" }}>
-          {isRegister ? "Create Account" : "Login"}
-        </button>
-      </form>
+        {error && <p className="login-error">{error}</p>}
 
-      {error && (
-        <p style={{ color: "red", marginTop: "10px", textAlign: "center" }}>{error}</p>
-      )}
-
-      <p
-        onClick={() => {
-          setIsRegister(!isRegister);
-          setError("");
-        }}
-        style={{ color: "blue", cursor: "pointer", marginTop: "10px", textAlign: "center" }}
-      >
-        {isRegister
-          ? "Already have an account? Login"
-          : "New user? Create an account"}
-      </p>
+        <p
+          className="login-toggle"
+          onClick={() => setIsRegister(!isRegister)}
+        >
+          {isRegister
+            ? "Already have an account? Login"
+            : "New here? Create an account"}
+        </p>
+      </div>
     </div>
   );
 }

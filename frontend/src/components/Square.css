@@ -11,8 +11,8 @@
   align-items: center;
   border: none;
   cursor: pointer;
-  position: relative;  /* Needed for overlay */
-  overflow: hidden;    /* Keep overlay inside card */
+  position: relative;
+  overflow: hidden;
   transition: transform 0.15s ease-in-out, box-shadow 0.15s;
 }
 

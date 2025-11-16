@@ -121,10 +121,10 @@ export default function Input({ onContinue, user }) {
                     <img
                       src={item.imageSrc}
                       alt={item.label}
-                      style={{ width: "40px", height: "40px", marginBottom: "8px" }}
+                      style={{ width: "60px", height: "60px", objectFit: "contain"}}
                     />
                   )}
-                  <div>{item.label}</div>
+                  <div className="square-text">{item.label}</div>
                 </button>
               );
             })}
