@@ -47,6 +47,10 @@ function App() {
     localStorage.removeItem("selectedIcons");
   };
 
+  const handleSquareClick = (icon) => {
+    console.log("Square clicked:", icon);
+  };
+
   if (loading) {
     return <div style={{ padding: "24px" }}>Loading...</div>;
   }
@@ -86,6 +90,7 @@ function App() {
               <Square
                 key={item._id}
                 icon={item}
+                onClick={() => handleSquareClick(item)}
               />
             ))}
           </div>
