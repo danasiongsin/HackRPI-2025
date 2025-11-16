@@ -3,6 +3,7 @@ import LoginScreen from "./components/LoginScreen";
 import Input from "./components/Input";
 import Square from "./components/Square";
 import "./App.css";
+import { speakWithElevenLabs } from "./utils/tts";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -50,6 +51,7 @@ function App() {
 
   const handleSquareClick = (icon) => {
     console.log("Square clicked:", icon);
+    speakWithElevenLabs(icon.label);
   };
 
   if (loading) {
