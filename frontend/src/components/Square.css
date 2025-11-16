@@ -1,0 +1,53 @@
+.square {
+  width: 90px;
+  height: 90px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  position: relative;  /* Needed for overlay */
+  overflow: hidden;    /* Keep overlay inside card */
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s;
+}
+
+.square:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.square:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+
+.square::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.15s ease-in-out;
+  pointer-events: none;
+}
+
+.square:active::after {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.square-image {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.square-label {
+  font-size: 16px;
+  /* font-weight: 600; */
+  color: #222;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Input.css";
+import "./Square.css";
 
 export default function Square({ icon = {}, onClick }) {
   // Log what we receive
