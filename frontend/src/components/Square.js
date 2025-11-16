@@ -12,31 +12,35 @@ export default function Square({ icon = {}, onClick }) {
 
   const handleClick = async () => {
     try {
-      const recipientEmail = prompt("Enter email address to send message to:");
+      const senderName = localStorage.getItem("userName") || "User";
+      const userId = localStorage.getItem("userId");
 
-      if (recipientEmail) {
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(recipientEmail)) {
-          alert("Please enter a valid email address");
+      // Prefer sending to the user's email stored in DB (pass userId).
+      // If userId missing, fallback to prompting for recipient email.
+      const payload = {
+        buttonLabel: icon.label || "(no label)",
+        senderName
+      };
+
+      if (userId) {
+        payload.userId = userId;
+      } else {
+        const promptEmail = prompt("Enter recipient email:");
+        if (!promptEmail) {
+          alert("No recipient provided.");
           return;
         }
-
-        const senderName = localStorage.getItem("userName") || "User";
-
-        await axios.post("http://localhost:5000/api/email/send", {
-          buttonLabel: icon.label,
-          senderName,
-          recipientEmail
-        });
-        alert(`"${icon.label}" sent to ${recipientEmail}!`);
+        payload.recipientEmail = promptEmail.trim().toLowerCase();
       }
+
+      await axios.post("http://localhost:5000/api/email/send", payload);
+      alert(`"${icon.label}" sent!`);
     } catch (err) {
       console.error("Error sending email:", err);
       alert(err.response?.data?.error || "Failed to send email");
     }
 
-    if (onClick) onClick();
+    if (onClick) onClick(icon);
   };
 
   return (
@@ -55,7 +59,7 @@ export default function Square({ icon = {}, onClick }) {
             height: 56,
             objectFit: "contain",
             display: "block",
-            margin: "0 auto 8px",
+            margin: "0 auto 8px"
           }}
           onError={(e) => console.error(`Image failed to load: ${src}`, e)}
         />
