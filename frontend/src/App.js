@@ -1,37 +1,91 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LoginScreen from "./components/LoginScreen";
 import Input from "./components/Input";
 import Square from "./components/Square";
 
 function App() {
-  const [user, setUser] = useState(null); // store logged-in user
+  const [user, setUser] = useState(null);
   const [selectedIcons, setSelectedIcons] = useState(null);
-  const handleSquareClick = (icon) => {
-    console.log("Square clicked:", icon);
+  const [loading, setLoading] = useState(true);
+
+  // Load user and selected icons from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem("user");
+      const savedIcons = localStorage.getItem("selectedIcons");
+
+      if (savedUser) {
+        setUser(JSON.parse(savedUser));
+      }
+      if (savedIcons) {
+        setSelectedIcons(JSON.parse(savedIcons));
+      }
+    } catch (err) {
+      console.error("Error loading from localStorage:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Save user to localStorage when it changes
+  const handleLogin = (userData) => {
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
+
+  // Save selected icons to localStorage when they change
+  const handleContinue = (icons) => {
+    setSelectedIcons(icons);
+    localStorage.setItem("selectedIcons", JSON.stringify(icons));
+  };
+
+  // Logout function
+  const handleLogout = () => {
+    setUser(null);
+    setSelectedIcons(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("selectedIcons");
+  };
+
+  if (loading) {
+    return <div style={{ padding: "24px" }}>Loading...</div>;
+  }
 
   return (
     <div>
       {/* 1. Login screen */}
       {!user ? (
-        <LoginScreen onLogin={setUser} />
+        <LoginScreen onLogin={handleLogin} />
       ) : 
       // 2. Selection screen
       !selectedIcons ? (
-        <Input onContinue={setSelectedIcons} user={user} />
+        <Input onContinue={handleContinue} user={user} />
       ) : (
         // 3. Display selected icons
         <div style={{ padding: "24px" }}>
-          <h1 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}>
-            Your Board
-          </h1>
-          
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+            <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>
+              Your Board
+            </h1>
+            <button
+              onClick={handleLogout}
+              style={{
+                padding: "8px 16px",
+                backgroundColor: "#ff4444",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer"
+              }}
+            >
+              Logout
+            </button>
+          </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
             {selectedIcons.map((item) => (
               <Square
                 key={item._id}
                 icon={item}
-                onClick={() => handleSquareClick(item)}
               />
             ))}
           </div>
