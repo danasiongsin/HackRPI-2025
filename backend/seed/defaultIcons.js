@@ -4,12 +4,12 @@ import Icon from "../models/icon.js";
 // Default icons grouped by category
 const iconLibrary = {
   Food: ["Eat", "Snack"],
-  Drinks: ["Drink"],
-  Emotions: ["Happy", "Sad", "Angry", "Hot", "Cold"],
-  Needs: ["Help", "Bathroom", "More", "Stop"],
-  Actions: ["Go", "Come", "Play", "Drive"],
-  Places: ["Home", "School", "Park"],
-  People: ["Mother", "Father"]
+  Drinks: ["Drink", "Water", "Juice", "Milk"],
+  Emotions: ["Happy", "Sad", "Angry", "Hot", "Cold", "Ok", "Hurt"],
+  Needs: ["Bathroom", "Sleep", "More", "Stop", "Chair", "Drive", "iPad"],
+  Actions: ["Go", "Come", "Play", "Drive", "Go", "Music", "Play", "Question", "Stop", "TV"],
+  Places: ["Home", "School", "Park", "Outside"],
+  People: ["Mother", "Father", "Dog", "Family"]
 };
 
 export const ensureDefaultIcons = async () => {
