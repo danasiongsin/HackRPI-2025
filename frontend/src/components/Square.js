@@ -2,6 +2,9 @@ import React from "react";
 import axios from "axios";
 import "./Square.css";
 
+const API = process.env.REACT_APP_API_URL;
+
+
 export default function Square({ icon = {}, onClick, isSpeaking, showToast }) {
   const src =
     icon.img_url ||
@@ -33,7 +36,7 @@ export default function Square({ icon = {}, onClick, isSpeaking, showToast }) {
         payload.recipientEmail = promptEmail.trim().toLowerCase();
       }
 
-      await axios.post("http://localhost:5000/api/email/send", payload);
+      await axios.post(`${API}/api/email/send`, payload);
       if (showToast) {
         // showToast(`"${icon.label}" sent to ${promptEmail}"`);
         showToast(`"${icon.label}" sent to email."`);
