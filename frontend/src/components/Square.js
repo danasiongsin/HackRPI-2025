@@ -1,10 +1,8 @@
 import React from "react";
+import axios from "axios";
 import "./Square.css";
 
 export default function Square({ icon = {}, onClick }) {
-  // Log what we receive
-  console.debug("Square received icon:", icon);
-
   const src =
     icon.img_url ||
     icon.imageSrc ||
@@ -12,12 +10,39 @@ export default function Square({ icon = {}, onClick }) {
     (icon.filename ? `/images/${encodeURIComponent(icon.filename)}` : null) ||
     "/logo192.png";
 
-  console.debug(`Square rendering with src: ${src}`);
+  const handleClick = async () => {
+    try {
+      const recipientEmail = prompt("Enter email address to send message to:");
+
+      if (recipientEmail) {
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(recipientEmail)) {
+          alert("Please enter a valid email address");
+          return;
+        }
+
+        const senderName = localStorage.getItem("userName") || "User";
+
+        await axios.post("http://localhost:5000/api/email/send", {
+          buttonLabel: icon.label,
+          senderName,
+          recipientEmail
+        });
+        alert(`"${icon.label}" sent to ${recipientEmail}!`);
+      }
+    } catch (err) {
+      console.error("Error sending email:", err);
+      alert(err.response?.data?.error || "Failed to send email");
+    }
+
+    if (onClick) onClick();
+  };
 
   return (
     <button
       className="square"
-      onClick={onClick}
+      onClick={handleClick}
       type="button"
       aria-label={icon.label || "icon"}
     >
