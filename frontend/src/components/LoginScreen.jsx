@@ -12,6 +12,18 @@ export default function LoginScreen({ onLogin }) {
     e.preventDefault();
     setError("");
 
+    // Validate phone number on frontend
+    if (!/^\d{10}$/.test(phone)) {
+      setError("Phone number must be exactly 10 digits");
+      return;
+    }
+
+    // Validate password length on register
+    if (isRegister && password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
     try {
       let response;
 
@@ -32,31 +44,20 @@ export default function LoginScreen({ onLogin }) {
 
       localStorage.setItem("token", token);
       localStorage.setItem("userId", user._id);
+      localStorage.setItem("user", JSON.stringify(user));
 
-      // Pass user back to App.js
+      setError(""); // Clear any previous errors
       onLogin(user);
 
       alert(isRegister ? "Account created!" : "Logged in!");
 
     } catch (err) {
-      console.error(err);
-      setError(
-        err.response?.data?.error ||
-        "Something went wrong. Try again."
-      );
-    }
-  };
-
-  const handleLogin = async () => {
-    try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        phone,
-        password
-      });
-      setError("");
-      onLogin(res.data); // calls App's handleLogin which saves to localStorage
-    } catch (err) {
-      setError(err.response?.data?.error || "Login failed");
+      console.error("Login/Register error:", err);
+      console.error("Error response:", err.response);
+      console.error("Error message:", err.message);
+      
+      const errorMessage = err.response?.data?.error || err.message || "Something went wrong. Try again.";
+      setError(errorMessage);
     }
   };
 
@@ -72,15 +73,17 @@ export default function LoginScreen({ onLogin }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            style={{ width: "100%", padding: "8px", marginBottom: "10px", boxSizing: "border-box" }}
           />
         )}
 
         <input
           type="text"
-          placeholder="Phone number"
+          placeholder="Phone number (10 digits)"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           required
+          style={{ width: "100%", padding: "8px", marginBottom: "10px", boxSizing: "border-box" }}
         />
 
         <input
@@ -89,20 +92,24 @@ export default function LoginScreen({ onLogin }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          style={{ width: "100%", padding: "8px", marginBottom: "10px", boxSizing: "border-box" }}
         />
 
-        <button type="submit">
+        <button type="submit" style={{ width: "100%", padding: "10px", cursor: "pointer" }}>
           {isRegister ? "Create Account" : "Login"}
         </button>
       </form>
 
       {error && (
-        <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
+        <p style={{ color: "red", marginTop: "10px", textAlign: "center" }}>{error}</p>
       )}
 
       <p
-        onClick={() => setIsRegister(!isRegister)}
-        style={{ color: "blue", cursor: "pointer", marginTop: "10px" }}
+        onClick={() => {
+          setIsRegister(!isRegister);
+          setError("");
+        }}
+        style={{ color: "blue", cursor: "pointer", marginTop: "10px", textAlign: "center" }}
       >
         {isRegister
           ? "Already have an account? Login"
