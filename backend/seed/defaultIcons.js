@@ -28,9 +28,12 @@ export const ensureDefaultIcons = async () => {
       });
 
       if (!existing) {
+        // File name = lowercase label + .png
+        const fileName = `${label.toLowerCase()}.png`;
+
         await Icon.create({
           label,
-          img_url: "",      // Add actual URLs later
+          img_url: `/images/${fileName}`,   // ⭐ correct URL
           audio_url: "",
           category: category._id
         });
