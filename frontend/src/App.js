@@ -49,10 +49,20 @@ function App() {
     localStorage.removeItem("selectedIcons");
   };
 
+  // const handleSquareClick = (icon) => {
+    
+  //   speakWithElevenLabs(icon.label);
+  // };
   const handleSquareClick = (icon) => {
     console.log("Square clicked:", icon);
-    speakWithElevenLabs(icon.label);
-  };
+    speakWithElevenLabs(
+    icon.label,
+    () => setSpeakingId(icon._id),  // start
+    () => setSpeakingId(null)       // end
+  );
+};
+  
+  const [speakingId, setSpeakingId] = useState(null);
 
   if (loading) {
     return <div style={{ padding: "24px" }}>Loading...</div>;
@@ -94,6 +104,7 @@ function App() {
                 key={item._id}
                 icon={item}
                 onClick={() => handleSquareClick(item)}
+                isSpeaking={speakingId === item._id}
               />
             ))}
           </div>

@@ -1,5 +1,7 @@
-export const speakWithElevenLabs = async (text) => {
+export const speakWithElevenLabs = async (text, onStart, onEnd) => {
   try {
+    onStart?.();  // tell UI that sound started
+
     const response = await fetch(
       "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL",
       {
@@ -9,7 +11,7 @@ export const speakWithElevenLabs = async (text) => {
           "xi-api-key": process.env.REACT_APP_ELEVEN_API_KEY
         },
         body: JSON.stringify({
-          text: text,
+          text,
           model_id: "eleven_multilingual_v2",
           voice_settings: {
             stability: 0.5,
@@ -19,17 +21,18 @@ export const speakWithElevenLabs = async (text) => {
       }
     );
 
-    if (!response.ok) {
-      throw new Error(`ElevenLabs error: ${response.statusText}`);
-    }
-
-    // Response is audio/mpeg
     const audioBlob = await response.blob();
-    const audioUrl = URL.createObjectURL(audioBlob);
+    const url = URL.createObjectURL(audioBlob);
 
-    const audio = new Audio(audioUrl);
+    const audio = new Audio(url);
+
+    audio.onended = () => {
+      onEnd?.();   // tell UI that sound stopped
+    };
+
     audio.play();
-  } catch (err) {
-    console.error("TTS error:", err);
+  } catch (error) {
+    console.error("TTS error:", error);
+    onEnd?.();
   }
 };

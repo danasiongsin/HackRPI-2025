@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import "./Square.css";
 
-export default function Square({ icon = {}, onClick }) {
+export default function Square({ icon = {}, onClick, isSpeaking }) {
   const src =
     icon.img_url ||
     icon.imageSrc ||
@@ -60,6 +60,10 @@ export default function Square({ icon = {}, onClick }) {
           onError={(e) => console.error(`Image failed to load: ${src}`, e)}
         />
       ) : null}
+
+      {isSpeaking && (
+        <div className="speaking-indicator">🔊</div>
+      )}
       <div className="square-label">{icon.label}</div>
     </button>
   );
