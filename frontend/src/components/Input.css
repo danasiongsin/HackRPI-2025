@@ -21,14 +21,12 @@
   margin-bottom: 8px;
 }
 
-/* GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: 12px;
 }
 
-/* CARD */
 .card {
   width: 90px;
   height: 90px;
@@ -52,7 +50,6 @@
   transform: scale(1.03);
 }
 
-/* CONTINUE BUTTON */
 .continue {
   margin-top: 16px;
   padding: 14px;
